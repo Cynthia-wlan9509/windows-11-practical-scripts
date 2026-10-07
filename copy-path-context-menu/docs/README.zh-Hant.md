@@ -1,4 +1,4 @@
-﻿# Windows 11 右鍵「複製絕對路徑」
+# Windows 11 右鍵「複製絕對路徑」
 
 右鍵一鍵複製檔案/資料夾的絕對路徑到剪貼簿，支援帶引號版本。純 PowerShell + 登錄檔，無需安裝任何軟體、無需系統管理員權限、可隨時移除。
 
@@ -50,4 +50,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-CopyPath.ps1 -Remo
 
 ## License
 
-[MIT](../LICENSE)
+[MIT](../../LICENSE)

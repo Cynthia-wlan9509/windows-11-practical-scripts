@@ -1,4 +1,4 @@
-﻿# Windows 11: clic derecho «Copiar ruta absoluta»
+# Windows 11: clic derecho «Copiar ruta absoluta»
 
 Con un solo clic derecho copias la ruta absoluta de un archivo/carpeta al portapapeles, con una opción con comillas. Solo PowerShell + registro de Windows: sin software adicional, sin permisos de administrador, fácil de desinstalar.
 
@@ -50,4 +50,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-CopyPath.ps1 -Remo
 
 ## Licencia
 
-[MIT](../LICENSE)
+[MIT](../../LICENSE)

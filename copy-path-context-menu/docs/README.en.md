@@ -1,4 +1,4 @@
-﻿# Windows 11 Right-click "Copy Absolute Path"
+# Windows 11 Right-click "Copy Absolute Path"
 
 One right-click copies the absolute path of a file/folder to your clipboard, with an optional quoted version. Pure PowerShell + Windows registry — no extra software, no admin rights, easy to uninstall.
 
@@ -56,4 +56,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-CopyPath.ps1 -Remo
 
 ## License
 
-[MIT](../LICENSE)
+[MIT](../../LICENSE)

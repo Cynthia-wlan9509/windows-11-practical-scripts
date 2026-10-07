@@ -1,4 +1,4 @@
-﻿# Windows 11 右クリック「絶対パスをコピー」
+# Windows 11 右クリック「絶対パスをコピー」
 
 右クリックだけでファイル・フォルダの絶対パスをクリップボードにコピーできます（引用符付きも選択可能）。PowerShell + レジストリのみ、追加ソフト不要・管理者権限不要・いつでもアンインストール可能。
 
@@ -50,4 +50,4 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-CopyPath.ps1 -Remo
 
 ## License
 
-[MIT](../LICENSE)
+[MIT](../../LICENSE)
