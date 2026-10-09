@@ -17,7 +17,8 @@
 
 - 运行 `.ps1` 脚本统一用：`powershell -NoProfile -ExecutionPolicy Bypass -File .\脚本名.ps1`
 - 安装脚本一般都支持 `-Status`（查看状态）和 `-Remove`（卸载）
-- 只写当前用户范围（`HKCU`、`%LOCALAPPDATA%`、「启动」文件夹），无需管理员权限
+- 只写当前用户范围（`HKCU`、用户目录、「启动」文件夹），无需管理员权限
+- **建议在普通的 PowerShell 窗口里运行安装脚本。** Claude / Codex 等商店版桌面应用的内置终端运行在沙盒里，写入 `AppData` 和 `HKCU` 注册表的内容可能被重定向到该应用的私有位置，应用外看不到（例如右键菜单不出现、开机自启找不到文件）
 - 脚本以 UTF-8 with BOM 保存，自己修改时请保持该编码，否则 Windows PowerShell 5.1 下中文会乱码
 
 ## 说明

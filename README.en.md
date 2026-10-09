@@ -15,7 +15,8 @@ Small tools for everyday Windows 11 annoyances, built with AI-assisted coding an
 
 - Run `.ps1` scripts with `powershell -NoProfile -ExecutionPolicy Bypass -File .\Script.ps1`
 - Installers support `-Status` and `-Remove`
-- Everything stays in current-user scope (`HKCU`, `%LOCALAPPDATA%`, the Startup folder); no admin rights needed
+- Everything stays in current-user scope (`HKCU`, your user folder, the Startup folder); no admin rights needed
+- **Run installers from a regular PowerShell window.** The built-in terminals of Microsoft Store desktop apps (Claude, Codex) are sandboxed: writes to `AppData` and `HKCU` may be redirected to the app's private storage and stay invisible outside it
 - Scripts are saved as UTF-8 with BOM; keep that encoding when editing, or Chinese text breaks in Windows PowerShell 5.1
 
 Built from my own day-to-day pain points with AI coding; any resemblance to existing projects is coincidental. Issues and PRs welcome.

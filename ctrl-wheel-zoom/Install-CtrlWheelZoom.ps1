@@ -6,7 +6,9 @@
 # 查看:  powershell -NoProfile -ExecutionPolicy Bypass -File Install-CtrlWheelZoom.ps1 -Status
 #
 # 需要 AutoHotkey v2。没装的话可以先执行: winget install --id AutoHotkey.AutoHotkey -e
-# 作用范围: 仅当前用户，无需管理员权限。脚本复制到 %LOCALAPPDATA%，并在 "启动" 文件夹放一个快捷方式实现开机自启。
+# 作用范围: 仅当前用户，无需管理员权限。脚本复制到 %USERPROFILE%\.win11-scripts，并在 "启动" 文件夹放一个快捷方式实现开机自启。
+# 为什么不放 %LOCALAPPDATA%: 在商店版应用（如 Claude / Codex 桌面版）的内置终端里运行时，写入 AppData 的文件会被
+# 重定向到该应用的私有目录，开机自启时就会报 "Script file not found"。用户目录本身不会被重定向。
 [CmdletBinding()]
 param(
     [switch]$Remove,
@@ -20,7 +22,8 @@ if ([string]::IsNullOrWhiteSpace($scriptRoot)) {
     $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 }
 
-$toolDir    = Join-Path $env:LOCALAPPDATA 'Win11Scripts\CtrlWheelZoom'
+$toolDir    = Join-Path $env:USERPROFILE '.win11-scripts\CtrlWheelZoom'
+$legacyDir  = Join-Path $env:LOCALAPPDATA 'Win11Scripts'  # 旧版本的安装位置，安装 / 卸载时顺手清理
 $workerPath = Join-Path $toolDir 'CtrlWheelZoom.ahk'
 $lnkPath    = Join-Path ([Environment]::GetFolderPath('Startup')) 'CtrlWheelZoom.lnk'
 
@@ -57,6 +60,7 @@ if ($Remove) {
     Stop-Worker
     if (Test-Path -LiteralPath $lnkPath) { Remove-Item -LiteralPath $lnkPath -Force }
     if (Test-Path -LiteralPath $toolDir) { Remove-Item -LiteralPath $toolDir -Recurse -Force }
+    if (Test-Path -LiteralPath $legacyDir) { Remove-Item -LiteralPath $legacyDir -Recurse -Force }
     Write-Host '已卸载 Ctrl + 滚轮缩放。'
     exit
 }
@@ -68,6 +72,7 @@ if (-not $ahk) {
 
 New-Item -ItemType Directory -Force -Path $toolDir | Out-Null
 Copy-Item -LiteralPath (Join-Path $scriptRoot 'CtrlWheelZoom.ahk') -Destination $workerPath -Force
+if (Test-Path -LiteralPath $legacyDir) { Remove-Item -LiteralPath $legacyDir -Recurse -Force }
 
 $ws  = New-Object -ComObject WScript.Shell
 $lnk = $ws.CreateShortcut($lnkPath)
@@ -77,7 +82,8 @@ $lnk.Description = 'Ctrl + 滚轮缩放 Electron 应用界面'
 $lnk.Save()
 
 Stop-Worker
-Start-Process -FilePath $ahk -ArgumentList "`"$workerPath`""
+# 通过资源管理器打开快捷方式来启动，让脚本跑在商店版应用的沙盒外，和开机自启时的环境一致
+Start-Process -FilePath (Join-Path $env:SystemRoot 'explorer.exe') -ArgumentList "`"$lnkPath`""
 
 Write-Host '已安装并启动 Ctrl + 滚轮缩放。'
 Write-Host "脚本: $workerPath"

@@ -34,7 +34,7 @@
    powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-CtrlWheelZoom.ps1
    ```
 
-安装脚本会把 `CtrlWheelZoom.ahk` 复制到 `%LOCALAPPDATA%\Win11Scripts\CtrlWheelZoom\`，在「启动」文件夹放一个快捷方式（开机自启），并立刻启动。无需管理员权限。
+安装脚本会把 `CtrlWheelZoom.ahk` 复制到 `%USERPROFILE%\.win11-scripts\CtrlWheelZoom\`，在「启动」文件夹放一个快捷方式（开机自启），并立刻启动。无需管理员权限。
 
 运行时任务栏右下角会有一个绿色 **H** 图标，右键 → Exit 可临时关闭。
 
@@ -62,6 +62,7 @@ ExeTargets := [
 ## 常见问题
 
 - **滚一格跳两级？** 说明这个应用本身已经支持 Ctrl + 滚轮，把它从列表里删掉即可。
+- **开机弹窗 `Script file not found`？** 旧版本把脚本装在 `%LOCALAPPDATA%`。如果是在 Claude / Codex 这类商店版应用的内置终端里（或让 AI 帮你）运行的安装脚本，写进 AppData 的文件会被重定向到该应用的私有目录，开机时就找不到。新版本已改为装到用户目录，重新运行一次安装脚本即可（会顺手清理旧位置）。
 - **没反应？** 先确认应用里按 `Ctrl + =` 能不能缩放；再用 `-Status` 看脚本是否在运行。
 - **为什么不直接改应用？** 商店版应用装在受保护的 `WindowsApps` 目录，改不了；而且应用一更新改动就没了。外挂一个热键脚本最稳。
 
