@@ -1,4 +1,4 @@
-# Ctrl + 滚轮缩放：让 Claude / Codex / Obsidian 桌面版支持 Ctrl + 鼠标滚轮放大缩小
+# Ctrl + 滚轮缩放：让 Claude / Codex / Obsidian 桌面版和 Multisim 支持 Ctrl + 鼠标滚轮放大缩小
 
 > 本工具属于 [Windows 11 实用脚本合集](../README.md)。English below.
 
@@ -19,6 +19,23 @@
 - **Obsidian**（`Obsidian.exe`）：缩放是整个程序级别的，**不管打开哪个仓库（vault）都生效**。和 Obsidian 自带的「Ctrl + 滚轮调字号」也不冲突：Ctrl + 滚轮会先被脚本接管。
 
 只在这些应用处于前台时生效，其他程序（浏览器、Office 等）不受影响。
+
+## Multisim（NI 电路仿真）
+
+Multisim 14 的滚轮和浏览器习惯正好相反：直接滚是缩放，想上下翻图纸得按住 Ctrl。脚本在**电路图画布**上把它改成和 Claude、浏览器一样：
+
+| 操作 | 效果 |
+| --- | --- |
+| 滚轮 | 上下滚动图纸 |
+| Shift + 滚轮 | 左右滚动图纸 |
+| Ctrl + 滚轮 | 放大 / 缩小 |
+| Ctrl + 按下滚轮（中键） | 整张图纸显示（等于 Multisim 的 F7「Zoom sheet」） |
+
+只在鼠标停在画布上时生效，元件库列表、表格视图、对话框里的滚轮照常。
+
+**建议在 Multisim 里设一次**：Options → Global options → General → Mouse wheel behavior，保持默认的 **Zoom workspace**，并勾上 **Center on mouse**，这样 Ctrl + 滚轮会以鼠标位置为中心缩放。设置要在 Multisim 正常退出（File → Exit）时才会保存。中文界面里是：选项 → 全局选项 → 常规。
+
+实现上，滚动是直接给画布发窗口滚动消息（`WM_VSCROLL` / `WM_HSCROLL`）。实测 Multisim 不认模拟出来的「Ctrl + 滚轮 = 滚动」，但认滚动消息。滚一格移动几行由 `CtrlWheelZoom.ahk` 里的 `MultisimScrollLines` 控制，默认 3。在 Multisim 14.3 上测试过。
 
 ## 安装
 
@@ -64,6 +81,7 @@ ExeTargets := [
 - **滚一格跳两级？** 说明这个应用本身已经支持 Ctrl + 滚轮，把它从列表里删掉即可。
 - **开机弹窗 `Script file not found`？** 旧版本把脚本装在 `%LOCALAPPDATA%`。如果是在 Claude / Codex 这类商店版应用的内置终端里（或让 AI 帮你）运行的安装脚本，写进 AppData 的文件会被重定向到该应用的私有目录，开机时就找不到。新版本已改为装到用户目录，重新运行一次安装脚本即可（会顺手清理旧位置）。
 - **没反应？** 先确认应用里按 `Ctrl + =` 能不能缩放；再用 `-Status` 看脚本是否在运行。
+- **Multisim 里滚轮没变？** 用 `-Status` 确认脚本在运行，并确认鼠标在电路图画布上（不是元件列表或表格）。如果之前把 Mouse wheel behavior 改成了 Scroll workspace，请改回 Zoom workspace。
 - **为什么不直接改应用？** 商店版应用装在受保护的 `WindowsApps` 目录，改不了；而且应用一更新改动就没了。外挂一个热键脚本最稳。
 
 ---
@@ -71,5 +89,7 @@ ExeTargets := [
 ## English
 
 **Ctrl + mouse wheel zoom for Claude Desktop, Codex Desktop and Obsidian on Windows.** Many Electron apps only zoom with `Ctrl + =` / `Ctrl + -` and ignore Ctrl + scroll. This AutoHotkey v2 script maps Ctrl + Wheel Up / Down to zoom in / out and Ctrl + Middle Click to reset, only while one of the listed apps is in the foreground. Obsidian zoom is app-wide, so it works in every vault.
+
+**Multisim 14 (NI circuit simulation)** works the other way round by default (plain wheel zooms, Ctrl + wheel scrolls). On the schematic canvas the script makes it browser-like: wheel scrolls vertically, Shift + wheel scrolls horizontally, Ctrl + wheel zooms, Ctrl + middle click shows the whole sheet (F7). Keep Multisim's *Options → Global options → General → Mouse wheel behavior* on **Zoom workspace** and tick **Center on mouse** to zoom around the cursor. Scrolling is done by posting `WM_VSCROLL` / `WM_HSCROLL` to the canvas, because Multisim ignores synthesized Ctrl + wheel. Tested on Multisim 14.3.
 
 Install AutoHotkey v2 (`winget install --id AutoHotkey.AutoHotkey -e`), then run `Install-CtrlWheelZoom.ps1` from this folder. Use `-Status` to check and `-Remove` to uninstall. Add more apps by editing `ExeTargets` in `CtrlWheelZoom.ahk`.

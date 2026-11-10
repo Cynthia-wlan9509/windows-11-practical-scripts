@@ -9,7 +9,7 @@
 | 工具 | 解决什么问题 | 依赖 |
 | --- | --- | --- |
 | [右键复制绝对路径](copy-path-context-menu/) | 右键文件 / 文件夹 / 驱动器，一键复制完整路径（可带引号）。把文件路径发给 AI、粘贴到命令行时特别方便 | 无（PowerShell + 注册表） |
-| [Ctrl + 滚轮缩放](ctrl-wheel-zoom/) | Claude 桌面版、Codex 桌面版、Obsidian 等应用按 Ctrl + 滚轮不能缩放，字太小 | AutoHotkey v2 |
+| [Ctrl + 滚轮缩放](ctrl-wheel-zoom/) | Claude 桌面版、Codex 桌面版、Obsidian 等应用按 Ctrl + 滚轮不能缩放，字太小；Multisim 的滚轮和浏览器习惯相反（直接滚是缩放） | AutoHotkey v2 |
 
 点进每个文件夹看详细说明、安装和卸载方法。
 
